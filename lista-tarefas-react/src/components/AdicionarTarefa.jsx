@@ -2,13 +2,14 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
-function AdicionarTarefa() {
+function AdicionarTarefa({ addTarefa }) {
     return (
         <div id="add-tarefa" className="flex flex-col gap-2 p-2 rounded border border-blue-800">
             <label htmlFor="novaTarefa">Nova Tarefa:            
                 <input 
                     id="novaTarefa"
                     type="text" 
+                    value={addTarefa.nome}
                     className="w-full mt-2 p-2 px-2 outline-none rounded"
                     placeholder="Nome da tarefa:"
                 />
@@ -33,8 +34,7 @@ function AdicionarTarefa() {
                             className="sm:w-1/5 p-2 px-2 outline-none rounded"
                             placeholder="00:00"
                         />
-                    </label>       
-                    
+                    </label>                           
                     <label htmlFor="horario-fim" className="flex flex-col">Fim: 
                         <input 
                             type="time" 
@@ -48,6 +48,7 @@ function AdicionarTarefa() {
             </div>
             <button
                 type="button"
+                onClick={addTarefa}
                 className="self-end p-2 rounded border-0 bg-sky-400 hover:bg-sky-600 active:bg-sky-600 text-white"
             >
                 Adicionar
