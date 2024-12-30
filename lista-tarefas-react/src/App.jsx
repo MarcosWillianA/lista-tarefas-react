@@ -18,21 +18,19 @@ function App() {
   };
 
   const removerTarefa = (indice) => {
-    setTarefas((prev) => prev.filter((tarefa) => tarefa.indice !== indice));
+    setTarefas((prev) => prev.filter((_, i) => i !== i));
   } 
 
   const editarTarefa = (indice, novosDados) => {
     setTarefas((prev) => 
-      prev.map((tarefa) => 
-        tarefa.indice === indice ? { ...tarefa, ...novosDados} : tarefa
-      )
+    prev.map((tarefa, i) => (i === indice ? { ...tarefa, ...novosDados } : tarefa ))
     );
   }
   
   const marcarConcluida = (indice) => {
     setTarefas((prev) => 
-      prev.map((tarefa) => 
-        tarefa.indice === indice ? { ...tarefa, concluida: !tarefa.concluida } : tarefa 
+      prev.map((tarefa, i) => 
+        i === indice ? { ...tarefa, concluida: !tarefa.concluida } : tarefa 
       )
     ); 
   }

@@ -2,7 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
-function AdicionarTarefa({ addTarefa }) {
+function AdicionarTarefa({ onAdicionarTarefa }) {
     const [nome, setNome] = useState('');
     const [descricao, setDescricao]  = useState('');
     const [inicio, setInicio] = useState('');
@@ -67,7 +67,7 @@ function AdicionarTarefa({ addTarefa }) {
                                 type="time" 
                                 name="horario-inicio" 
                                 id="horario-fim" 
-                                value={inicio}
+                                value={fim}
                                 onChange={(e) => setFim(e.target.value)}
                                 className="sm:w-1/5 p-2 px-2 outline-none rounded"
                                 placeholder="00:00"
