@@ -8,32 +8,46 @@ import ListaTarefas from './components/ListaTarefas';
 
 
 function App() {
-  const [novaTarefa, setNovaTarefa] = useState({
-    nome: '',
-    descricao: '',
-    inicio: '',
-    fim: '',
-  });
-  const [tarefas, setTarefas] = useState([]);
+  const [tarefas, setTarefas] = useState([]); 
 
-  function handleTarefa() {
-    if (novaTarefa.nome.trim() !== '') {
-      setTarefas([...tarefas, novaTarefa]);
-      setNovaTarefa('');
-    }
-  }
+  const adicionarTarefa = (tarefa) => {
+    setTarefas((prev) => [
+      ...prev, 
+      { ...tarefa, concluida: false },
+    ]);
+  };
 
-  function handleRemover(indice) {
-    const novasTarefas = tarefas.filter((_, index) => index !== indice);
-    setTarefas([...novaTarefa])
+  const removerTarefa = (indice) => {
+    setTarefas((prev) => prev.filter((tarefa) => tarefa.indice !== indice));
+  } 
+
+  const editarTarefa = (indice, novosDados) => {
+    setTarefas((prev) => 
+      prev.map((tarefa) => 
+        tarefa.indice === indice ? { ...tarefa, ...novosDados} : tarefa
+      )
+    );
   }
   
+  const marcarConcluida = (indice) => {
+    setTarefas((prev) => 
+      prev.map((tarefa) => 
+        tarefa.indice === indice ? { ...tarefa, concluida: !tarefa.concluida } : tarefa 
+      )
+    ); 
+  }
+
   return (
     <main>
       <div id="container" className="min-w-60 max-w-xl m-auto p-2 rounded border-2 border-blue-800 bg-blue-200 font-poppins">
         <h2 className="mb-4 font-bold text-center text-2xl">Lista de Tarefas</h2>
-        <AdicionarTarefa addTarefa={handleTarefa}/>
-        <ListaTarefas />
+        <AdicionarTarefa onAddTarefa={adicionarTarefa}/>
+        <ListaTarefas
+          tarefas={tarefas}
+          onRemoverTarefa={removerTarefa}
+          onEditarTarefa={editarTarefa}
+          onMarcarConcluida={marcarConcluida}
+        />
       </div>
     </main>
   )
