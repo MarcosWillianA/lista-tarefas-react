@@ -8,7 +8,8 @@ function ListaTarefas() {
     return (
         <ul className="m-auto border-2 border-blue-800">
             <h3 className="py-2 border-b border-blue-800 font-bold text-center text-xl" >Tarefas:</h3>
-            
+                {tarefa}
+
                 <li className="p-2 border-b border-blue-800">
                     <p>
                         <strong>Tarefa:</strong>
