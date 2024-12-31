@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState, useEffect } from 'react';
 import './components/AdicionarTarefa';
 import AdicionarTarefa from './components/AdicionarTarefa';
 import ListaTarefas from './components/ListaTarefas';
@@ -6,7 +6,14 @@ import ListaTarefas from './components/ListaTarefas';
 
 
 function App() {
-  const [tarefas, setTarefas] = useState([]); 
+  const [tarefas, setTarefas] = useState(() => {
+    const tarefasSalvas = localStorage.getItem('tarefas');
+    return tarefasSalvas ? JSON.parse(tarefasSalvas) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('tarefas', JSON.stringify(tarefas));
+  }, [tarefas]);
 
   const adicionarTarefa = (tarefa) => {
     setTarefas((prev) => [
@@ -16,7 +23,7 @@ function App() {
   };
 
   const removerTarefa = (indice) => {
-    setTarefas((prev) => prev.filter((_, i) => i !== i));
+    setTarefas((prev) => prev.filter((_, i) => i !== indice));
   } 
 
   const editarTarefa = (indice, novosDados) => {
