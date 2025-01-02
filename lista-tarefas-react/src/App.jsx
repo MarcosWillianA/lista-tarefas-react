@@ -18,25 +18,26 @@ function App() {
   useEffect(() => {
     const interval = setInterval(() => {
       const agora = new Date();
+  
       setTarefas((prev) =>
         prev.map((tarefa) => {
-          // Se a tarefa já está alarmando ou foi concluída, não faça nada.
-          if (tarefa.concluida || tarefa.alarmando) return tarefa;
+          if (tarefa.concluida || tarefa.alarmando || !tarefa.fim) {
+            return tarefa;
+          }
   
-          if (tarefa.fim) {
-            // Construa uma data completa para o fim da tarefa com base no horário da tarefa.
-            const [horas, minutos] = tarefa.fim.split(':').map(Number);
-            const fimTarefa = new Date(agora);
-            fimTarefa.setHours(horas, minutos, 0, 0); // Adicione hora e minuto da tarefa.
+          // Construa uma data completa para o fim da tarefa
+          const [horas, minutos] = tarefa.fim.split(':').map(Number);
+          const fimTarefa = new Date(agora);
+          fimTarefa.setHours(horas, minutos, 0, 0);
   
-            // Calcule o tempo restante
-            const tempoRestante = fimTarefa - agora;
+          // Calcule o tempo restante
+          const tempoRestante = fimTarefa - agora;
   
-            // Dispare o alerta se faltar menos de 5 minutos.
-            if (tempoRestante <= 5 * 60 * 1000 && tempoRestante > 0) {
-              alert(`A tarefa "${tarefa.nome}" está a 5 minutos do fim`);
-              return { ...tarefa, alarmando: true };
-            }
+          if (tempoRestante > 0 && tempoRestante <= 5 * 60 * 1000) {
+            // Exiba o alerta e marque a tarefa como alarmando
+            console.log(`Alerta disparado para: ${tarefa.nome}`); // Substitua por um log para depuração
+            alert(`A tarefa "${tarefa.nome}" está a 5 minutos do fim.`);
+            return { ...tarefa, alarmando: true };
           }
   
           return tarefa;
@@ -46,6 +47,7 @@ function App() {
   
     return () => clearInterval(interval);
   }, []);
+  
 
   const adicionarTarefa = (tarefa) => {
     setTarefas((prev) => [
