@@ -15,10 +15,42 @@ function App() {
     localStorage.setItem('tarefas', JSON.stringify(tarefas));
   }, [tarefas]);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const agora = new Date();
+      setTarefas((prev) =>
+        prev.map((tarefa) => {
+          // Se a tarefa já está alarmando ou foi concluída, não faça nada.
+          if (tarefa.concluida || tarefa.alarmando) return tarefa;
+  
+          if (tarefa.fim) {
+            // Construa uma data completa para o fim da tarefa com base no horário da tarefa.
+            const [horas, minutos] = tarefa.fim.split(':').map(Number);
+            const fimTarefa = new Date(agora);
+            fimTarefa.setHours(horas, minutos, 0, 0); // Adicione hora e minuto da tarefa.
+  
+            // Calcule o tempo restante
+            const tempoRestante = fimTarefa - agora;
+  
+            // Dispare o alerta se faltar menos de 5 minutos.
+            if (tempoRestante <= 5 * 60 * 1000 && tempoRestante > 0) {
+              alert(`A tarefa "${tarefa.nome}" está a 5 minutos do fim`);
+              return { ...tarefa, alarmando: true };
+            }
+          }
+  
+          return tarefa;
+        })
+      );
+    }, 1000);
+  
+    return () => clearInterval(interval);
+  }, []);
+
   const adicionarTarefa = (tarefa) => {
     setTarefas((prev) => [
       ...prev, 
-      { ...tarefa, concluida: false },
+      { ...tarefa, concluida: false, alarmando: false },
     ]);
   };
 
