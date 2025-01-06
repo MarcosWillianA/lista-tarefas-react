@@ -34,10 +34,9 @@ function App() {
           const tempoRestante = fimTarefa - agora;
   
           if (tempoRestante > 0 && tempoRestante <= 5 * 60 * 1000) {
-            // Exiba o alerta e marque a tarefa como alarmando
-            console.log(`Alerta disparado para: ${tarefa.nome}`); // Substitua por um log para depuração
+            // Marque a tarefa como "alarmando" antes de disparar o alerta
+            tarefa.alarmando = true; 
             alert(`A tarefa "${tarefa.nome}" está a 5 minutos do fim.`);
-            return { ...tarefa, alarmando: true };
           }
   
           return tarefa;
@@ -47,6 +46,8 @@ function App() {
   
     return () => clearInterval(interval);
   }, []);
+  
+  
   
 
   const adicionarTarefa = (tarefa) => {
